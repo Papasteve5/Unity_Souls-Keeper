@@ -24,6 +24,7 @@ public class Battlesystem : MonoBehaviour
 
     Vector3 originalPos;
 
+    //Always updates HP and HUD of the Player
     void Update()
     {
         playerHUD.setHP(playerAttribute.currentHP);
