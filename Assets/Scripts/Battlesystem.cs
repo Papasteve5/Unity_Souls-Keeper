@@ -17,8 +17,7 @@ public class Battlesystem : MonoBehaviour
 
     attribute playerAttribute;
     attribute enemyAttribute;
-
-    public Text enemyName;
+    public Text battleText;
 
     public BattleHUD playerHUD;
 
@@ -34,11 +33,11 @@ public class Battlesystem : MonoBehaviour
     void Start()
     {
         state = BattleState.START;
-        setBattle();
+        StartCoroutine(setBattle());
         originalPos = new Vector3(playerAttribute.transform.position.x, playerAttribute.transform.position.y);
     }
 
-    void setBattle() {
+    IEnumerator setBattle() {
 
         // Spawn Player and get it's Information
         GameObject playerSpawn = Instantiate(playerPrefab, playerPos);
@@ -50,6 +49,10 @@ public class Battlesystem : MonoBehaviour
         // Spawn Enemy and get it's Information
         GameObject enemySpawn = Instantiate(enemyPrefab, enemyPos);
         enemyAttribute = enemySpawn.GetComponent<attribute>();
+
+        battleText.text = "A wild " + enemyAttribute.Name + " approached";
+
+        yield return new WaitForSeconds(2f);
 
         // Show Interfaces of Player
         playerHUD.setHUD(playerAttribute);
@@ -63,7 +66,7 @@ public class Battlesystem : MonoBehaviour
 
         bool isDead = enemyAttribute.TakeDamage(playerAttribute.damage);
 
-        Debug.Log("Enemy Hit");
+        battleText.text = enemyAttribute.Name + " has been hit";
 
         yield return new WaitForSeconds(2f);
 
@@ -83,9 +86,10 @@ public class Battlesystem : MonoBehaviour
 
         playerAttribute.transform.position = originalPos;
 
-
         // Activates the movement script to doge Enemy hits
         playerAttribute.GetComponent<Movement>().enabled = true;
+
+        battleText.text = enemyAttribute.Name + " is going to attack!";
 
         yield return new WaitForSeconds(2f);
 
@@ -119,6 +123,8 @@ public class Battlesystem : MonoBehaviour
     }
 
     void PlayerTurn() {
+
+        battleText.text = "Choose your option";
 
         // Disable Movement for PlayerTurn
         playerAttribute.GetComponent<Movement>().enabled = false;
