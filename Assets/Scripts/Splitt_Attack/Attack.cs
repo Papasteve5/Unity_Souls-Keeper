@@ -56,7 +56,7 @@ public class Attack : MonoBehaviour
 
         foreach(GameObject arrow in arrows)
         {
-            Destroy(arrow, 10);
+            Destroy(arrow, 5);
         }
     }
 }
