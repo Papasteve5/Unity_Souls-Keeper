@@ -48,7 +48,7 @@ MonoBehaviour:
   Name: Split
   lvl: 10
   damage: 5
-  maxHP: 20
+  maxHP: 50
   currentHP: 20
 --- !u!114 &4628462233616355593
 MonoBehaviour:

@@ -19,7 +19,8 @@ public class Battlesystem : MonoBehaviour
     attribute enemyAttribute;
     public Text battleText;
 
-    public BattleHUD playerHUD;
+    public PlayerHUD playerHUD;
+    public EnemyHUD enemyHUD;
 
     Vector3 originalPos;
 
@@ -28,10 +29,13 @@ public class Battlesystem : MonoBehaviour
     {
         playerHUD.setHP(playerAttribute.currentHP);
         playerHUD.setHUD(playerAttribute);
+        enemyHUD.setHP(enemyAttribute.currentHP);
+        enemyHUD.setHUD(enemyAttribute);
     }
 
     void Start()
     {
+        playerPrefab.GetComponent<Movement>().speed = 0;
         state = BattleState.START;
         StartCoroutine(setBattle());
         originalPos = new Vector3(playerAttribute.transform.position.x, playerAttribute.transform.position.y);
@@ -43,9 +47,6 @@ public class Battlesystem : MonoBehaviour
         GameObject playerSpawn = Instantiate(playerPrefab, playerPos);
         playerAttribute = playerSpawn.GetComponent<attribute>();
 
-        // Disable Movement for the start of Battle (for PlayerTurn)
-        playerPrefab.GetComponent<Movement>().enabled = false;
-
         // Spawn Enemy and get it's Information
         GameObject enemySpawn = Instantiate(enemyPrefab, enemyPos);
         enemyAttribute = enemySpawn.GetComponent<attribute>();
@@ -56,6 +57,7 @@ public class Battlesystem : MonoBehaviour
 
         // Show Interfaces of Player
         playerHUD.setHUD(playerAttribute);
+        enemyHUD.setHUD(enemyAttribute);
 
         // Change State
         state = BattleState.PLAYERTURN;
@@ -87,7 +89,7 @@ public class Battlesystem : MonoBehaviour
         playerAttribute.transform.position = originalPos;
 
         // Activates the movement script to doge Enemy hits
-        playerAttribute.GetComponent<Movement>().enabled = true;
+        playerAttribute.GetComponent<Movement>().speed = 5;
 
         battleText.text = enemyAttribute.Name + " is going to attack!";
 
@@ -127,7 +129,7 @@ public class Battlesystem : MonoBehaviour
         battleText.text = "Choose your option";
 
         // Disable Movement for PlayerTurn
-        playerAttribute.GetComponent<Movement>().enabled = false;
+        playerAttribute.GetComponent<Movement>().speed = 0;
 
     }
 
@@ -138,5 +140,14 @@ public class Battlesystem : MonoBehaviour
         }
 
         StartCoroutine(PlayerAttack());
+    }
+
+    public void OnActButton() {
+
+        if (state != BattleState.PLAYERTURN) {
+            return;
+        }
+
+        Debug.Log("Act");
     }
 }

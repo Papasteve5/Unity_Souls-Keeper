@@ -3,19 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BattleHUD : MonoBehaviour
+public class EnemyHUD : MonoBehaviour
 {
-    public Text playerName;
-    public Text playerLVL;
-    public Text playerHP;
+    public Text enemyName;
+    public Text enemeyLVL;
+    public Text enemyHP;
     public Slider health;
 
     public void setHUD(attribute attribute) {
 
-        playerName.text = attribute.Name;
-        playerLVL.text = "LV " + attribute.lvl;
-        playerHP.text = "HP " + attribute.currentHP.ToString() + "/" + attribute.maxHP.ToString();
-
+        enemyName.text = attribute.Name;
 
         health.maxValue = attribute.maxHP;
         health.value = attribute.currentHP;
