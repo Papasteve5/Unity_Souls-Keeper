@@ -8,6 +8,7 @@ public class attribute : MonoBehaviour
     public int lvl;
 
     public int damage;
+    public int fire_multiplier;
 
     public int maxHP;
     public int currentHP;

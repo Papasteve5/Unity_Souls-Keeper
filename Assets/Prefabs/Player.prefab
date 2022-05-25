@@ -50,6 +50,7 @@ MonoBehaviour:
   Name: Player
   lvl: 1
   damage: 5
+  fire_multiplier: 2
   maxHP: 20
   currentHP: 20
 --- !u!61 &4835453150401417270

@@ -16,6 +16,7 @@ public class Battlesystem : MonoBehaviour
     public GameObject firePrefab;
 
     public Transform playerPos;
+    [SerializeField] GameObject playerSprite;
     public Transform enemyPos;
 
     attribute playerAttribute;
@@ -27,6 +28,8 @@ public class Battlesystem : MonoBehaviour
     public EnemyHUD enemyHUD;
 
     [SerializeField] GameObject enemyInfo;
+
+    public GameObject box;
 
     Vector3 originalPos;
 
@@ -51,6 +54,10 @@ public class Battlesystem : MonoBehaviour
 
 
     IEnumerator setBattle() {
+
+        // Makes Player "invisible" for the start of battle
+        playerPos = playerSprite.transform;
+        playerSprite.SetActive(false);
 
         // Spawns Player and gets Information from script attribute
         GameObject playerSpawn = Instantiate(playerPrefab, playerPos);
@@ -78,9 +85,11 @@ public class Battlesystem : MonoBehaviour
 
         bool isDead = enemyAttribute.TakeDamage(playerAttribute.damage);
 
+        enemyInfo.SetActive(false);
+
         battleText.text = enemyAttribute.Name + " has been hit";
 
-        yield return new WaitForSeconds(0f);
+        yield return new WaitForSeconds(2f);
 
         // Checks if Enemy is alive
         if(isDead) {
@@ -99,14 +108,16 @@ public class Battlesystem : MonoBehaviour
 
         // Creates Fire "Animation"
         GameObject fire = Instantiate(firePrefab, enemyPos);
-        Destroy(fire, 1);
+        Destroy(fire, 2);
 
-        // Make Fire Damage
-        bool isDead = enemyAttribute.TakeDamage(playerAttribute.damage * 4);
+        // Makes Fire Damage
+        bool isDead = enemyAttribute.TakeDamage(playerAttribute.damage * playerAttribute.fire_multiplier);
 
-        battleText.text = enemyAttribute.Name + " has been hit with Fire = x2 damage";
+        enemyInfo.SetActive(false);
 
-        yield return new WaitForSeconds(0f);
+        battleText.text = "It was super effective";
+
+        yield return new WaitForSeconds(2f);
 
         // Checks if Enemy is alive
         if(isDead) {
@@ -123,8 +134,14 @@ public class Battlesystem : MonoBehaviour
 
     IEnumerator EnemyTurn() {
 
+        playerPos = playerSprite.transform;
+        playerSprite.SetActive(true);
+
         // Disables EnemyHUD during Enemys turn
         enemyInfo.SetActive(false);
+
+        // Sets the scale of the GameObject "box"
+        box.transform.localScale = new Vector3(8,8,0);
 
         playerAttribute.transform.position = originalPos;
 
@@ -167,11 +184,17 @@ public class Battlesystem : MonoBehaviour
 
     void PlayerTurn() {
 
+        // Change size of box
+        box.transform.localScale = new Vector3(32,8,0);
+
+        // Makes Player "invisible" for this turn
+        playerPos = playerSprite.transform;
+        playerSprite.SetActive(false);
+
         battleText.text = "Choose your option";
 
         // Disable Movement for PlayerTurn
         playerAttribute.GetComponent<Movement>().speed = 0;
-
     }
 
     public void OnAttackButton() {
