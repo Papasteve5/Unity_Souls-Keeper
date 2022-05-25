@@ -13,6 +13,8 @@ public class Battlesystem : MonoBehaviour
     public GameObject playerPrefab;
     public GameObject enemyPrefab;
 
+    public GameObject firePrefab;
+
     public Transform playerPos;
     public Transform enemyPos;
 
@@ -77,6 +79,32 @@ public class Battlesystem : MonoBehaviour
         bool isDead = enemyAttribute.TakeDamage(playerAttribute.damage);
 
         battleText.text = enemyAttribute.Name + " has been hit";
+
+        yield return new WaitForSeconds(0f);
+
+        // Checks if Enemy is alive
+        if(isDead) {
+
+            state = BattleState.WON;
+            EndBattle();
+
+        } else {
+
+            state = BattleState.ENEMYTURN;
+            StartCoroutine(EnemyTurn());
+        }
+    }
+
+    IEnumerator PlayerFire() {
+
+        // Creates Fire "Animation"
+        GameObject fire = Instantiate(firePrefab, enemyPos);
+        Destroy(fire, 1);
+
+        // Make Fire Damage
+        bool isDead = enemyAttribute.TakeDamage(playerAttribute.damage * 4);
+
+        battleText.text = enemyAttribute.Name + " has been hit with Fire = x2 damage";
 
         yield return new WaitForSeconds(0f);
 
@@ -163,6 +191,15 @@ public class Battlesystem : MonoBehaviour
         }
 
         StartCoroutine(PlayerAttack());
+    }
+
+    public void OnFireButton() {
+
+        if (state != BattleState.PLAYERTURN) {
+            return;
+        }
+
+        StartCoroutine(PlayerFire());
     }
 
     public void OnActButton() {
