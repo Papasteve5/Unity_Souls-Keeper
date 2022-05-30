@@ -28,10 +28,13 @@ public class Battlesystem : MonoBehaviour
     public EnemyHUD enemyHUD;
 
     [SerializeField] GameObject enemyInfo;
+    [SerializeField] GameObject acts;
 
     public GameObject box;
 
     Vector3 originalPos;
+    private bool isFriendly;
+    private bool toldJoke;
 
     // Always updates HP and HUD of the Player and Enemy
     void Update()
@@ -104,6 +107,46 @@ public class Battlesystem : MonoBehaviour
         }
     }
 
+    IEnumerator PlayerAct() {
+
+        acts.SetActive(false);
+
+        string[] textoptions = {"You told the enemy a joke", "You tried to cooperate with the enemy"};
+        string[] textoptionsGood = {"It found the joke hilarious", "it appreciated your attemp"};
+        string[] textoptionsBad = {"You have already told that joke", ""};
+
+        battleText.text = textoptions[0];
+        battleText.enabled = true;
+
+        yield return new WaitForSeconds(2f);
+
+        if (toldJoke) {
+            battleText.text = textoptionsBad[0];
+            battleText.text = "Dude you have already told me the joke";
+
+        } else {
+
+            battleText.text = textoptionsGood[0];
+            battleText.text = "HAHAHAHAAHAHA, I hate to admit it \nbut that was funny!";
+            enemyAttribute.friendliness += 25;
+            toldJoke = true;
+        }
+
+        yield return new WaitForSeconds(4f);
+
+
+        if (enemyAttribute.friendliness == 100) {
+
+            state = BattleState.WON;
+            EndBattle();
+
+        } else {
+
+            state = BattleState.ENEMYTURN;
+            StartCoroutine(EnemyTurn());
+        }
+    }
+
     IEnumerator PlayerFire() {
 
         // Creates Fire "Animation"
@@ -134,6 +177,9 @@ public class Battlesystem : MonoBehaviour
 
     IEnumerator EnemyTurn() {
 
+        battleText.text = enemyAttribute.Name + " is going to attack!";
+        yield return new WaitForSeconds(2f);
+
         playerPos = playerSprite.transform;
         playerSprite.SetActive(true);
 
@@ -148,7 +194,7 @@ public class Battlesystem : MonoBehaviour
         // Activates the movement script to doge Enemy hits
         playerAttribute.GetComponent<Movement>().speed = 5;
 
-        battleText.text = enemyAttribute.Name + " is going to attack!";
+        battleText.enabled = false;
 
         yield return new WaitForSeconds(2f);
 
@@ -183,7 +229,6 @@ public class Battlesystem : MonoBehaviour
     }
 
     void PlayerTurn() {
-
         // Change size of box
         box.transform.localScale = new Vector3(32,8,0);
 
@@ -191,6 +236,7 @@ public class Battlesystem : MonoBehaviour
         playerPos = playerSprite.transform;
         playerSprite.SetActive(false);
 
+        battleText.enabled = true;
         battleText.text = "Choose your option";
 
         // Disable Movement for PlayerTurn
@@ -198,6 +244,8 @@ public class Battlesystem : MonoBehaviour
     }
 
     public void OnAttackButton() {
+
+        acts.SetActive(false);
 
         if (state != BattleState.PLAYERTURN) {
             return;
@@ -211,28 +259,42 @@ public class Battlesystem : MonoBehaviour
 
         if (state != BattleState.PLAYERTURN) {
             return;
-        }
 
-        StartCoroutine(PlayerAttack());
+        } else {
+            StartCoroutine(PlayerAttack());
+        }
     }
 
     public void OnFireButton() {
 
         if (state != BattleState.PLAYERTURN) {
             return;
-        }
 
-        StartCoroutine(PlayerFire());
+        } else {
+            StartCoroutine(PlayerFire());
+        }
     }
 
     public void OnActButton() {
 
-        enemyInfo.SetActive(false);
+        if (state != BattleState.PLAYERTURN) {
+            return;
+
+        } else {
+            battleText.enabled = false;
+            enemyInfo.SetActive(false);
+
+            acts.SetActive(true);
+        }
+    }
+
+    public void OnActButtonFriendly() {
 
         if (state != BattleState.PLAYERTURN) {
             return;
-        }
 
-        Debug.Log("Act");
+        } else {
+            StartCoroutine(PlayerAct());
+        }
     }
 }

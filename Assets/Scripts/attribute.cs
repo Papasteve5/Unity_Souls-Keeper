@@ -13,6 +13,8 @@ public class attribute : MonoBehaviour
     public int maxHP;
     public int currentHP;
 
+    public int friendliness;
+
     public bool TakeDamage(int dmg) {
 
         currentHP -= dmg;
