@@ -32,15 +32,12 @@ public class Attack : MonoBehaviour
             for(int i = 0; i < 3; i++) {
                 newArrow_down = Instantiate(Arrow_down, new Vector2(Random.Range(-1.8f, 1.8f), Random.Range(8.0f, 12.0f)), Quaternion.identity);
             }
-
             for(int i = 0; i < 6; i++) {
                 newArrow_up = Instantiate(Arrow_up, new Vector2(Random.Range(-1.8f, 1.8f), Random.Range(-8.0f, -12.0f)), Quaternion.identity);
             }
-
             for(int i = 0; i < 2; i++) {
                 newArrow_left = Instantiate(Arrow_left, new Vector2(Random.Range(8.0f, 12.0f), Random.Range(-1.8f, 1.8f)), Quaternion.identity);
             }
-
             for(int i = 0; i < 2; i++) {
                 newArrow_right = Instantiate(Arrow_right, new Vector2(Random.Range(-8.0f, -12.0f), Random.Range(-1.8f, 1.8f)), Quaternion.identity);
             }

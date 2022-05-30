@@ -50,9 +50,11 @@ MonoBehaviour:
   Name: Player
   lvl: 1
   damage: 5
+  takenDamage: 1
   fire_multiplier: 2
   maxHP: 20
   currentHP: 20
+  friendliness: 0
 --- !u!61 &4835453150401417270
 BoxCollider2D:
   m_ObjectHideFlags: 0

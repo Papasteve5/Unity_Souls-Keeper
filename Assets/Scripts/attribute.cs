@@ -8,6 +8,7 @@ public class attribute : MonoBehaviour
     public int lvl;
 
     public int damage;
+    public int takenDamage;
     public int fire_multiplier;
 
     public int maxHP;
@@ -31,7 +32,7 @@ public class attribute : MonoBehaviour
     {
         if (other.tag == "Projectile")
         {
-            TakeDamage(1);
+            TakeDamage(takenDamage);
         }
     }
 
