@@ -45,7 +45,6 @@ public class Battlesystem : MonoBehaviour
         enemyHUD.setHUD(enemyAttribute);
     }
 
-    // Gets called when starting Scene
     void Start()
     {
         playerPrefab.GetComponent<Movement>().speed = 0;
@@ -70,11 +69,11 @@ public class Battlesystem : MonoBehaviour
         GameObject enemySpawn = Instantiate(enemyPrefab, enemyPos);
         enemyAttribute = enemySpawn.GetComponent<attribute>();
 
-        battleText.text = "My- ";
+        battleText.text = "\"My- \"";
         yield return new WaitForSeconds(1f);
-        battleText.text = "No ";
+        battleText.text = "\"No\"";
         yield return new WaitForSeconds(1f);
-        battleText.text = "OUR NAME IS " + enemyAttribute.Name;
+        battleText.text = "\"OUR NAME IS " + enemyAttribute.Name + "\"";
         yield return new WaitForSeconds(2f);
 
         // Show Interfaces of Player
@@ -85,136 +84,24 @@ public class Battlesystem : MonoBehaviour
         PlayerTurn();
     }
 
-    // Gets called when Enemy Name is clicked after Attack Button
-    IEnumerator PlayerAttack() {
+    void PlayerTurn() {
+        // Change size of box
+        box.transform.localScale = new Vector3(32,8,0);
 
-        bool isDead = enemyAttribute.TakeDamage(playerAttribute.damage);
-
-        enemyInfo.SetActive(false);
-        battleText.enabled = true;
-        battleText.text = enemyAttribute.Name + " has been hit";
-
-        yield return new WaitForSeconds(2f);
-
-        // Checks if Enemy is alive
-        if(isDead) {
-
-            state = BattleState.WON;
-            EndBattle();
-
-        } else {
-
-            state = BattleState.ENEMYTURN;
-            StartCoroutine(EnemyTurn());
-        }
-    }
-
-    IEnumerator PlayerActJoke() {
-
-        acts.SetActive(false);
-
-        string[] joke = {"* It found the joke hilarious", "* You have already told that joke"};
-        string[] reactions = {"\"HAHAHAHAAHAHA\" \n\"I hate to admit it but that was funny!\"", "\"Dude you have already told me the joke\""};
-
-        battleText.text = "* You told the enemy a joke";
-        battleText.enabled = true;
-        yield return new WaitForSeconds(2f);
-
-        if (toldJoke) {
-            battleText.text = joke[1];
-            yield return new WaitForSeconds(2f);
-            battleText.text = reactions[1];
-
-        } else {
-
-            battleText.text = joke[0];
-            yield return new WaitForSeconds(2f);
-            battleText.text = reactions[0];
-            yield return new WaitForSeconds(3f);
-            enemyAttribute.friendliness += 25;
-
-            if (playerAttribute.takenDamage > 1) {
-
-                playerAttribute.takenDamage = 1;
-                battleText.text = "Damage has been reduced";
-                yield return new WaitForSeconds(2f);
-            }
-            toldJoke = true;
-        }
-
-        if (enemyAttribute.friendliness == 100) {
-
-            state = BattleState.WON;
-            EndBattle();
-
-        } else {
-
-            state = BattleState.ENEMYTURN;
-            StartCoroutine(EnemyTurn());
-        }
-    }
-
-    IEnumerator PlayerActThreat() {
-
-        acts.SetActive(false);
-
-        battleText.text = "* You threatened the enemy";
-        battleText.enabled = true;
-        enemyAttribute.friendliness += 10;
-
-        yield return new WaitForSeconds(2f);
-
-        battleText.text = "\"Tch, go home kid\"";
-        yield return new WaitForSeconds(2f);
-
-        playerAttribute.takenDamage += 1;
-        battleText.text = "* The enemys Damage has increased";
-        yield return new WaitForSeconds(2f);
-
-        if (enemyAttribute.friendliness == 100) {
-
-            state = BattleState.WON;
-            EndBattle();
-
-        } else {
-
-            state = BattleState.ENEMYTURN;
-            StartCoroutine(EnemyTurn());
-        }
-    }
-
-    IEnumerator PlayerFire() {
-
-        // Creates Fire "Animation"
-        GameObject fire = Instantiate(firePrefab, enemyPos);
-        Destroy(fire, 2);
-
-        // Makes Fire Damage
-        bool isDead = enemyAttribute.TakeDamage(playerAttribute.damage * playerAttribute.fire_multiplier);
-
-        enemyInfo.SetActive(false);
+        // Makes Player "invisible" for this turn
+        playerPos = playerSprite.transform;
+        playerSprite.SetActive(false);
 
         battleText.enabled = true;
-        battleText.text = "It was super effective";
+        battleText.text = "* Choose your move";
 
-        yield return new WaitForSeconds(2f);
-
-        // Checks if Enemy is alive
-        if(isDead) {
-
-            state = BattleState.WON;
-            EndBattle();
-
-        } else {
-
-            state = BattleState.ENEMYTURN;
-            StartCoroutine(EnemyTurn());
-        }
+        // Disable Movement for PlayerTurn
+        playerAttribute.GetComponent<Movement>().speed = 0;
     }
 
     IEnumerator EnemyTurn() {
 
-        battleText.text = enemyAttribute.Name + " is going to attack!";
+        battleText.text = "* " + enemyAttribute.Name + " is going to attack!";
         yield return new WaitForSeconds(2f);
 
         playerPos = playerSprite.transform;
@@ -264,20 +151,6 @@ public class Battlesystem : MonoBehaviour
         }
     }
 
-    void PlayerTurn() {
-        // Change size of box
-        box.transform.localScale = new Vector3(32,8,0);
-
-        // Makes Player "invisible" for this turn
-        playerPos = playerSprite.transform;
-        playerSprite.SetActive(false);
-
-        battleText.enabled = true;
-        battleText.text = "Choose your move";
-
-        // Disable Movement for PlayerTurn
-        playerAttribute.GetComponent<Movement>().speed = 0;
-    }
 
     public void OnAttackButton() {
 
@@ -291,7 +164,6 @@ public class Battlesystem : MonoBehaviour
             enemyInfo.SetActive(true);
         }
     }
-
     public void OnAttackEnemyButton() {
 
         if (state != BattleState.PLAYERTURN) {
@@ -301,6 +173,29 @@ public class Battlesystem : MonoBehaviour
             StartCoroutine(PlayerAttack());
         }
     }
+    IEnumerator PlayerAttack() {
+
+        bool isDead = enemyAttribute.TakeDamage(playerAttribute.damage);
+
+        enemyInfo.SetActive(false);
+        battleText.enabled = true;
+        battleText.text = "* " + enemyAttribute.Name + " has been hit";
+
+        yield return new WaitForSeconds(2f);
+
+        // Checks if Enemy is alive
+        if(isDead) {
+
+            state = BattleState.WON;
+            EndBattle();
+
+        } else {
+
+            state = BattleState.ENEMYTURN;
+            StartCoroutine(EnemyTurn());
+        }
+    }
+
 
     public void OnFireButton() {
 
@@ -311,6 +206,35 @@ public class Battlesystem : MonoBehaviour
             StartCoroutine(PlayerFire());
         }
     }
+    IEnumerator PlayerFire() {
+
+        // Creates Fire "Animation"
+        GameObject fire = Instantiate(firePrefab, enemyPos);
+        Destroy(fire, 2);
+
+        // Makes Fire Damage
+        bool isDead = enemyAttribute.TakeDamage(playerAttribute.damage * playerAttribute.fire_multiplier);
+
+        enemyInfo.SetActive(false);
+
+        battleText.enabled = true;
+        battleText.text = "* It was super effective";
+
+        yield return new WaitForSeconds(2f);
+
+        // Checks if Enemy is alive
+        if(isDead) {
+
+            state = BattleState.WON;
+            EndBattle();
+
+        } else {
+
+            state = BattleState.ENEMYTURN;
+            StartCoroutine(EnemyTurn());
+        }
+    }
+
 
     public void OnActButton() {
 
@@ -334,6 +258,89 @@ public class Battlesystem : MonoBehaviour
             StartCoroutine(PlayerActJoke());
         }
     }
+    IEnumerator PlayerActJoke() {
+
+        acts.SetActive(false);
+
+        string[] joke = {"* It found the joke hilarious", "* You have already told that joke"};
+        string[] reactions = {"\"HAHAHAHAAHAHA\" \n\"I hate to admit it but that was funny!\"", "\"Dude you have already told me the joke\""};
+
+        battleText.text = "* You told the enemy a joke";
+        battleText.enabled = true;
+        yield return new WaitForSeconds(2f);
+
+        if (toldJoke) {
+            battleText.text = joke[1];
+            yield return new WaitForSeconds(2f);
+            battleText.text = reactions[1];
+            yield return new WaitForSeconds(2f);
+
+        } else {
+
+            battleText.text = joke[0];
+            yield return new WaitForSeconds(2f);
+            battleText.text = reactions[0];
+            yield return new WaitForSeconds(3f);
+            enemyAttribute.friendliness += 25;
+
+            if (playerAttribute.takenDamage > 1) {
+
+                playerAttribute.takenDamage = 1;
+                battleText.text = "* Damage has been reduced";
+                yield return new WaitForSeconds(2f);
+            }
+            toldJoke = true;
+        }
+
+        if (enemyAttribute.friendliness == 100) {
+
+            state = BattleState.WON;
+            EndBattle();
+
+        } else {
+
+            state = BattleState.ENEMYTURN;
+            StartCoroutine(EnemyTurn());
+        }
+    }
+
+
+    public void OnActButtonCompliment() {
+
+        if (state != BattleState.PLAYERTURN) {
+            return;
+
+        } else {
+            StartCoroutine(PlayerActCompliment());
+        }
+    }
+    IEnumerator PlayerActCompliment() {
+
+        acts.SetActive(false);
+
+        battleText.text = "* You gave the enemy a compliment";
+        battleText.enabled = true;
+        yield return new WaitForSeconds(2f);
+
+        battleText.text = "* It liked it a lot";
+        yield return new WaitForSeconds(2f);
+
+        battleText.text = "\"Awww, thank you!\"";
+        enemyAttribute.friendliness += 20;
+        yield return new WaitForSeconds(2f);
+
+        if (enemyAttribute.friendliness == 100) {
+
+            state = BattleState.WON;
+            EndBattle();
+
+        } else {
+
+            state = BattleState.ENEMYTURN;
+            StartCoroutine(EnemyTurn());
+        }
+    }
+
 
     public void OnActButtonThreat() {
 
@@ -342,6 +349,34 @@ public class Battlesystem : MonoBehaviour
 
         } else {
             StartCoroutine(PlayerActThreat());
+        }
+    }
+    IEnumerator PlayerActThreat() {
+
+        acts.SetActive(false);
+
+        battleText.text = "* You threatened the enemy";
+        battleText.enabled = true;
+        enemyAttribute.friendliness += 10;
+
+        yield return new WaitForSeconds(2f);
+
+        battleText.text = "\"Tch, go home kid\"";
+        yield return new WaitForSeconds(2f);
+
+        playerAttribute.takenDamage += 1;
+        battleText.text = "* The enemys Damage has increased";
+        yield return new WaitForSeconds(2f);
+
+        if (enemyAttribute.friendliness == 100) {
+
+            state = BattleState.WON;
+            EndBattle();
+
+        } else {
+
+            state = BattleState.ENEMYTURN;
+            StartCoroutine(EnemyTurn());
         }
     }
 }
