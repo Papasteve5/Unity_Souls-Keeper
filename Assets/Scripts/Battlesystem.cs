@@ -29,6 +29,7 @@ public class Battlesystem : MonoBehaviour
 
     [SerializeField] GameObject enemyInfo;
     [SerializeField] GameObject acts;
+    [SerializeField] GameObject mercyDecision;
 
     public GameObject box;
 
@@ -143,6 +144,10 @@ public class Battlesystem : MonoBehaviour
 
         if (state == BattleState.WON) {
 
+            Destroy(enemyAttribute);
+
+            battleText.text = "* You have gained a ";
+
             SceneManager.LoadScene(sceneName:"WinScreen");
 
         } else if (state == BattleState.LOST) {
@@ -235,7 +240,6 @@ public class Battlesystem : MonoBehaviour
         }
     }
 
-
     public void OnActButton() {
 
         if (state != BattleState.PLAYERTURN) {
@@ -289,19 +293,17 @@ public class Battlesystem : MonoBehaviour
                 battleText.text = "* Damage has been reduced";
                 yield return new WaitForSeconds(2f);
             }
+
             toldJoke = true;
+
+            if (enemyAttribute.friendliness >= enemyAttribute.maxfriendliness) {
+
+                battleText.text = "* The Enemy has taken a Liking to you now";
+                yield return new WaitForSeconds(2f);
+            }
         }
-
-        if (enemyAttribute.friendliness == 100) {
-
-            state = BattleState.WON;
-            EndBattle();
-
-        } else {
-
-            state = BattleState.ENEMYTURN;
-            StartCoroutine(EnemyTurn());
-        }
+        state = BattleState.ENEMYTURN;
+        StartCoroutine(EnemyTurn());
     }
 
 
@@ -329,16 +331,14 @@ public class Battlesystem : MonoBehaviour
         enemyAttribute.friendliness += 20;
         yield return new WaitForSeconds(2f);
 
-        if (enemyAttribute.friendliness == 100) {
+        if (enemyAttribute.friendliness >= enemyAttribute.maxfriendliness) {
 
-            state = BattleState.WON;
-            EndBattle();
-
-        } else {
-
-            state = BattleState.ENEMYTURN;
-            StartCoroutine(EnemyTurn());
+            battleText.text = "* The Enemy has taken a Liking to you now";
+            yield return new WaitForSeconds(2f);
         }
+
+        state = BattleState.ENEMYTURN;
+        StartCoroutine(EnemyTurn());
     }
 
 
@@ -368,15 +368,84 @@ public class Battlesystem : MonoBehaviour
         battleText.text = "* The enemys Damage has increased";
         yield return new WaitForSeconds(2f);
 
-        if (enemyAttribute.friendliness == 100) {
+        if (enemyAttribute.friendliness >= enemyAttribute.maxfriendliness) {
 
-            state = BattleState.WON;
-            EndBattle();
+            battleText.text = "* The Enemy has taken a Liking to you now";
+            yield return new WaitForSeconds(2f);
+        }
+
+        state = BattleState.ENEMYTURN;
+        StartCoroutine(EnemyTurn());
+    }
+
+
+    public void OnMercyButton() {
+
+        if (state != BattleState.PLAYERTURN) {
+            return;
 
         } else {
 
-            state = BattleState.ENEMYTURN;
-            StartCoroutine(EnemyTurn());
+            if (enemyAttribute.friendliness >= enemyAttribute.maxfriendliness) {
+
+                state = BattleState.WON;
+                StartCoroutine(PlayerMercy());
+            }
         }
+    }
+    IEnumerator PlayerMercy() {
+
+        battleText.text = "\"You know what?\"";
+        yield return new WaitForSeconds(2f);
+
+        battleText.text = "\"Screw this fight\"";
+        yield return new WaitForSeconds(2f);
+
+        battleText.text = "\"I kinda like you\"";
+        yield return new WaitForSeconds(2f);
+
+        battleText.text = "* It seems the enemy want's to be friends with you";
+        yield return new WaitForSeconds(2f);
+
+        battleText.alignment = TextAnchor.UpperCenter;
+        battleText.text = "* Do you want to recruit " + enemyAttribute.Name + "?";
+        mercyDecision.SetActive(true);
+    }
+
+    public void OnMercyYESButton() {
+
+        StartCoroutine(MercyYES());
+    }
+
+    IEnumerator MercyYES() {
+        battleText.alignment = TextAnchor.MiddleCenter;
+        mercyDecision.SetActive(false);
+
+        battleText.text = "\"I'm glad to be working with you\"";
+        yield return new WaitForSeconds(3f);
+
+        SceneManager.LoadScene(sceneName:"NewMemberScene");
+    }
+
+    public void OnMercyNOButton() {
+
+        StartCoroutine(MercyNO());
+    }
+
+    IEnumerator MercyNO() {
+        battleText.alignment = TextAnchor.MiddleCenter;
+        mercyDecision.SetActive(false);
+
+        battleText.text = "\"That's ok\"";
+        yield return new WaitForSeconds(2f);
+
+        battleText.text = "\"I'll see you later\"";
+        yield return new WaitForSeconds(2f);
+
+        battleText.text = "* You have rejected " + enemyAttribute.Name + " from your party";
+        yield return new WaitForSeconds(2f);
+
+        enemyAttribute.GetComponentInChildren<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.25f);
+        enemyAttribute.GetComponentInChildren<Animator>().enabled = false;
     }
 }

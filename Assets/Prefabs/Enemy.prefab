@@ -48,8 +48,12 @@ MonoBehaviour:
   Name: Split
   lvl: 10
   damage: 5
+  takenDamage: 0
+  fire_multiplier: 0
   maxHP: 50
   currentHP: 20
+  friendliness: 0
+  maxfriendliness: 25
 --- !u!114 &4628462233616355593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -140,7 +144,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 3
   m_Sprite: {fileID: -9088115634623337255, guid: 1497b0eacca42254e9407037ca4146f9, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.39215687}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -158,7 +162,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8614103175925918379}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: b0b1300d4360a044786beaf7832139d5, type: 2}
   m_CullingMode: 0
