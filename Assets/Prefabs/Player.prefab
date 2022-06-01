@@ -49,12 +49,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Player
   lvl: 1
-  damage: 5
+  EXP: 0
+  maxHP: 10
+  currentHP: 0
+  damage: 10
   takenDamage: 1
   fire_multiplier: 2
-  maxHP: 20
-  currentHP: 20
   friendliness: 0
+  maxfriendliness: 0
 --- !u!61 &4835453150401417270
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -184,9 +186,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingLayerID: -1225802379
+  m_SortingLayer: 2
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 363aa7d7d01b60d4cb6b83dffa9e7341, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

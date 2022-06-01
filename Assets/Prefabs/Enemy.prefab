@@ -46,12 +46,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: Split
-  lvl: 10
-  damage: 5
+  lvl: 3
+  EXP: 0
+  maxHP: 40
+  currentHP: 0
+  damage: 1
   takenDamage: 0
   fire_multiplier: 0
-  maxHP: 50
-  currentHP: 20
   friendliness: 0
   maxfriendliness: 25
 --- !u!114 &4628462233616355593
@@ -140,8 +141,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1225802379
+  m_SortingLayer: 2
   m_SortingOrder: 3
   m_Sprite: {fileID: -9088115634623337255, guid: 1497b0eacca42254e9407037ca4146f9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

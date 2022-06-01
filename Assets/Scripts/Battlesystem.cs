@@ -29,6 +29,7 @@ public class Battlesystem : MonoBehaviour
 
     [SerializeField] GameObject enemyInfo;
     [SerializeField] GameObject acts;
+    [SerializeField] GameObject items;
     [SerializeField] GameObject mercyDecision;
 
     public GameObject box;
@@ -65,10 +66,12 @@ public class Battlesystem : MonoBehaviour
         // Spawns Player and gets Information from script attribute
         GameObject playerSpawn = Instantiate(playerPrefab, playerPos);
         playerAttribute = playerSpawn.GetComponent<attribute>();
+        playerAttribute.setCharacter();
 
         // Spawns Enemy and gets Information from script attribute
         GameObject enemySpawn = Instantiate(enemyPrefab, enemyPos);
         enemyAttribute = enemySpawn.GetComponent<attribute>();
+        enemyAttribute.setCharacter();
 
         battleText.text = "\"My- \"";
         yield return new WaitForSeconds(1f);
@@ -101,6 +104,12 @@ public class Battlesystem : MonoBehaviour
     }
 
     IEnumerator EnemyTurn() {
+
+        if (enemyAttribute.friendliness >= enemyAttribute.maxfriendliness) {
+
+            battleText.text = "* The Enemy has taken a Liking to you now";
+            yield return new WaitForSeconds(2f);
+        }
 
         battleText.text = "* " + enemyAttribute.Name + " is going to attack!";
         yield return new WaitForSeconds(2f);
@@ -144,11 +153,7 @@ public class Battlesystem : MonoBehaviour
 
         if (state == BattleState.WON) {
 
-            Destroy(enemyAttribute);
-
-            battleText.text = "* You have gained a ";
-
-            SceneManager.LoadScene(sceneName:"WinScreen");
+            StartCoroutine(EnemyDeath());
 
         } else if (state == BattleState.LOST) {
 
@@ -156,16 +161,29 @@ public class Battlesystem : MonoBehaviour
         }
     }
 
+    IEnumerator EnemyDeath() {
+
+        battleText.text = "Argh, you've defeated me...";
+        yield return new WaitForSeconds(2f);
+
+        Destroy(enemyAttribute.gameObject);
+
+        battleText.text = "You've won!";
+        yield return new WaitForSeconds(2f);
+
+        SceneManager.LoadScene(sceneName:"WinScreen");
+    }
+
 
     public void OnAttackButton() {
-
-        acts.SetActive(false);
 
         if (state != BattleState.PLAYERTURN) {
             return;
         }
         else {
             battleText.enabled = false;
+            items.SetActive(false);
+            acts.SetActive(false);
             enemyInfo.SetActive(true);
         }
     }
@@ -248,7 +266,7 @@ public class Battlesystem : MonoBehaviour
         } else {
             battleText.enabled = false;
             enemyInfo.SetActive(false);
-
+            items.SetActive(false);
             acts.SetActive(true);
         }
     }
@@ -295,12 +313,6 @@ public class Battlesystem : MonoBehaviour
             }
 
             toldJoke = true;
-
-            if (enemyAttribute.friendliness >= enemyAttribute.maxfriendliness) {
-
-                battleText.text = "* The Enemy has taken a Liking to you now";
-                yield return new WaitForSeconds(2f);
-            }
         }
         state = BattleState.ENEMYTURN;
         StartCoroutine(EnemyTurn());
@@ -330,12 +342,6 @@ public class Battlesystem : MonoBehaviour
         battleText.text = "\"Awww, thank you!\"";
         enemyAttribute.friendliness += 20;
         yield return new WaitForSeconds(2f);
-
-        if (enemyAttribute.friendliness >= enemyAttribute.maxfriendliness) {
-
-            battleText.text = "* The Enemy has taken a Liking to you now";
-            yield return new WaitForSeconds(2f);
-        }
 
         state = BattleState.ENEMYTURN;
         StartCoroutine(EnemyTurn());
@@ -368,32 +374,27 @@ public class Battlesystem : MonoBehaviour
         battleText.text = "* The enemys Damage has increased";
         yield return new WaitForSeconds(2f);
 
-        if (enemyAttribute.friendliness >= enemyAttribute.maxfriendliness) {
-
-            battleText.text = "* The Enemy has taken a Liking to you now";
-            yield return new WaitForSeconds(2f);
-        }
-
         state = BattleState.ENEMYTURN;
         StartCoroutine(EnemyTurn());
     }
-
 
     public void OnMercyButton() {
 
         if (state != BattleState.PLAYERTURN) {
             return;
 
-        } else {
+        } else if (enemyAttribute.friendliness >= enemyAttribute.maxfriendliness) {
 
-            if (enemyAttribute.friendliness >= enemyAttribute.maxfriendliness) {
-
-                state = BattleState.WON;
-                StartCoroutine(PlayerMercy());
-            }
+            battleText.enabled = true;
+            enemyInfo.SetActive(false);
+            acts.SetActive(false);
+            items.SetActive(false);
+            StartCoroutine(PlayerMercy());
         }
     }
     IEnumerator PlayerMercy() {
+
+        state = BattleState.WON;
 
         battleText.text = "\"You know what?\"";
         yield return new WaitForSeconds(2f);
@@ -447,5 +448,21 @@ public class Battlesystem : MonoBehaviour
 
         enemyAttribute.GetComponentInChildren<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.25f);
         enemyAttribute.GetComponentInChildren<Animator>().enabled = false;
+    }
+
+
+
+
+    public void OnItemButton() {
+
+        if (state != BattleState.PLAYERTURN) {
+            return;
+
+        } else {
+            battleText.enabled = false;
+            enemyInfo.SetActive(false);
+            acts.SetActive(false);
+            items.SetActive(true);
+        }
     }
 }

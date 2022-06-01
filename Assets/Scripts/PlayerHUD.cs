@@ -21,13 +21,13 @@ public class PlayerHUD : MonoBehaviour
         health.value = attribute.currentHP;
     }
 
-    public void setMaxHP(int hp) {
+    public void setMaxHP(float hp) {
 
         health.maxValue = hp;
         health.value = hp;
     }
 
-    public void setHP(int hp) {
+    public void setHP(float hp) {
 
         health.value = hp;
     }
