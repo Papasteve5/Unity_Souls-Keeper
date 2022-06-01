@@ -20,6 +20,9 @@ public GameObject enemyPrefab;
         GameObject enemySpawn = Instantiate(enemyPrefab, enemyPos);
         enemyAttribute = enemySpawn.GetComponent<attribute>();
 
+        enemyAttribute.GetComponentInChildren<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.25f);
+        enemyAttribute.GetComponentInChildren<Animator>().enabled = false;
+
         Text sentence = SceneText.GetComponent<Text>();
         sentence.text = "You have recruited a new Member!";
 
