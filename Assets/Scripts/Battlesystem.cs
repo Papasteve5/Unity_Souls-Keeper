@@ -38,7 +38,6 @@ public class Battlesystem : MonoBehaviour
 
     Vector3 originalPos;
     private bool toldJoke;
-    public bool used;
 
     // Updates HP & HUD of the Player and the Enemy to the newest version
     void Update()
@@ -533,7 +532,7 @@ public class Battlesystem : MonoBehaviour
     }
     public void OnHealthPotionButton()
     {
-        if (playerAttribute.currentHP == playerAttribute.maxHP || used)
+        if (playerAttribute.currentHP == playerAttribute.maxHP || item_functions.used)
         {
             return;
         }
@@ -541,7 +540,9 @@ public class Battlesystem : MonoBehaviour
         else
         {
             item_functions.HealthPotion(playerAttribute);
-            used = true;
+            items.SetActive(false);
+            state = BattleState.ENEMYTURN;
+            StartCoroutine(EnemyTurn());
         }
     }
 
