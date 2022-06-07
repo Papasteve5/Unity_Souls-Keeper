@@ -883,6 +883,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb35e3372657a8c47ad8893a1a4cccb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  used: 0
 --- !u!1 &233834644
 GameObject:
   m_ObjectHideFlags: 0
@@ -1215,7 +1216,7 @@ MonoBehaviour:
   playerPos: {fileID: 287519061}
   playerSprite: {fileID: 287519060}
   enemyPos: {fileID: 1260849063}
-  item_functions: {fileID: 0}
+  item_functions: {fileID: 229692369}
   battleText: {fileID: 170129808}
   playerHUD: {fileID: 6106276}
   enemyHUD: {fileID: 34188174}
@@ -1224,7 +1225,6 @@ MonoBehaviour:
   items: {fileID: 233834644}
   mercyDecision: {fileID: 832875772}
   box: {fileID: 870840096}
-  used: 0
 --- !u!4 &361034477
 Transform:
   m_ObjectHideFlags: 0
@@ -1251,6 +1251,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb35e3372657a8c47ad8893a1a4cccb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  used: 0
 --- !u!1 &388611853
 GameObject:
   m_ObjectHideFlags: 0
