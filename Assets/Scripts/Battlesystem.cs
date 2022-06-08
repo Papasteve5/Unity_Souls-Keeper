@@ -124,6 +124,11 @@ public class Battlesystem : MonoBehaviour
             battleText.text = "* The Enemy has taken a Liking to you now";
             yield return new WaitForSeconds(2f);
         }
+        else if (enemyAttribute.currentHP < enemyAttribute.maxHP)
+        {
+            battleText.text = "* " + enemyAttribute.Name + " has been hit";
+            yield return new WaitForSeconds(1f);
+        }
 
         battleText.text = "* " + enemyAttribute.Name + " is going to attack!";
         yield return new WaitForSeconds(2f);
@@ -193,7 +198,6 @@ public class Battlesystem : MonoBehaviour
         SceneManager.LoadScene(sceneName: "WinScreen");
     }
 
-
     public void OnAttackButton()
     {
         if (state != BattleState.PLAYERTURN)
@@ -205,23 +209,23 @@ public class Battlesystem : MonoBehaviour
             battleText.enabled = false;
             items.SetActive(false);
             acts.SetActive(false);
+
             enemyInfo.SetActive(true);
         }
     }
+
     public void OnAttackEnemyButton()
     {
-        StartCoroutine(PlayerAttack());
+        PlayerAttack();
     }
-    IEnumerator PlayerAttack()
-    {
 
+    void PlayerAttack()
+    {
         bool isDead = enemyAttribute.TakeDamage(playerAttribute.damage);
 
         enemyInfo.SetActive(false);
-        battleText.enabled = true;
-        battleText.text = "* " + enemyAttribute.Name + " has been hit";
 
-        yield return new WaitForSeconds(2f);
+        battleText.enabled = true;
 
         // Checks if Enemy is alive
         if (isDead)
