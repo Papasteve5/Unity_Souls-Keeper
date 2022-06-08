@@ -33,6 +33,7 @@ public class Battlesystem : MonoBehaviour
     [SerializeField] GameObject acts;
     [SerializeField] GameObject items;
     [SerializeField] GameObject mercyDecision;
+    [SerializeField] GameObject hideHUD;
 
     public GameObject box;
 
@@ -62,6 +63,7 @@ public class Battlesystem : MonoBehaviour
     IEnumerator setBattle()
     {
         // Deactivated, makes these informations invisible for now
+        hideHUD.SetActive(false);
         enemyInfo.SetActive(false);
         acts.SetActive(false);
         items.SetActive(false);
@@ -102,6 +104,8 @@ public class Battlesystem : MonoBehaviour
         // Change size of box (larger for text)
         box.transform.localScale = new Vector3(32, 8, 0);
 
+        hideHUD.SetActive(false);
+
         // Deactivates Player, so that he can pick a move
         playerAttribute.GetComponent<Movement>().speed = 0;
 
@@ -129,6 +133,7 @@ public class Battlesystem : MonoBehaviour
 
         // Disables EnemyHUD during Enemys turn
         enemyInfo.SetActive(false);
+        hideHUD.SetActive(true);
 
         // Sets the scale of the GameObject "box"
         box.transform.localScale = new Vector3(8, 8, 0);
@@ -191,7 +196,6 @@ public class Battlesystem : MonoBehaviour
 
     public void OnAttackButton()
     {
-
         if (state != BattleState.PLAYERTURN)
         {
             return;
@@ -206,16 +210,7 @@ public class Battlesystem : MonoBehaviour
     }
     public void OnAttackEnemyButton()
     {
-
-        if (state != BattleState.PLAYERTURN)
-        {
-            return;
-        }
-
-        else
-        {
-            StartCoroutine(PlayerAttack());
-        }
+        StartCoroutine(PlayerAttack());
     }
     IEnumerator PlayerAttack()
     {
