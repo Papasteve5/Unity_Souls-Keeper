@@ -20,18 +20,19 @@ public class attribute : MonoBehaviour
     public int friendliness;
     public int maxfriendliness;
 
-    public bool TakeDamage(float dmg) {
-
+    public bool TakeDamage(float dmg)
+    {
         currentHP -= dmg;
 
-        if(currentHP <= 0) {
+        if (currentHP <= 0)
+        {
             return true;
-        } else {
+        }
+        else
+        {
             return false;
         }
     }
-
-
     public void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Projectile")
@@ -39,15 +40,8 @@ public class attribute : MonoBehaviour
             TakeDamage(takenDamage);
         }
     }
-
-
-    // Start is called before the first frame update
-    void Start()
+    public void setCharacter()
     {
-    }
-
-    public void setCharacter() {
-        //CurrentMaxHp = BaseHP + (MaximumPossibleHP - BaseHP) * CurrentLevel / MaximumPossibleLevel
 
         float MaximumPossibleHP = 999;
         float MaximumPossibleLevel = 100;
@@ -60,7 +54,6 @@ public class attribute : MonoBehaviour
         float MaximumPossibleDMG = 999;
 
         damage = Mathf.Round(damage + (MaximumPossibleDMG - damage) * lvl / MaximumPossibleLevel / 4);
-
 
         maxfriendliness = maxfriendliness + (2 + lvl);
         currentHP = maxHP;

@@ -8,9 +8,13 @@ public class PlayerHUD : MonoBehaviour
     public Text playerName;
     public Text playerLVL;
     public Text playerHP;
+    public RectTransform playerHP_POS;
     public Slider health;
+    public RectTransform health_POS;
+    public GameObject buttons;
 
-    public void setHUD(attribute attribute) {
+    public void setHUD(attribute attribute)
+    {
 
         playerName.text = attribute.Name;
         playerLVL.text = "LV " + attribute.lvl;
@@ -21,13 +25,15 @@ public class PlayerHUD : MonoBehaviour
         health.value = attribute.currentHP;
     }
 
-    public void setMaxHP(float hp) {
+    public void setMaxHP(float hp)
+    {
 
         health.maxValue = hp;
         health.value = hp;
     }
 
-    public void setHP(float hp) {
+    public void setHP(float hp)
+    {
 
         health.value = hp;
     }
