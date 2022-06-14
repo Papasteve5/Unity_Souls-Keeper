@@ -1070,19 +1070,21 @@ MonoBehaviour:
   state: 0
   playerPrefab: {fileID: 4835453150401417266, guid: 3dfb613c8f5194643a2b5edc08b8d9a8, type: 3}
   enemyPrefab: {fileID: 7367842126946585565, guid: 95465e59010ae9141a869e14529c8298, type: 3}
-  firePrefab: {fileID: 2994422130186658313, guid: 066cb47bd2484754ea1ca119c40b9856, type: 3}
   playerPos: {fileID: 287519061}
-  playerSprite: {fileID: 287519060}
   enemyPos: {fileID: 1260849063}
-  item_functions: {fileID: 1146426332}
-  battleText: {fileID: 170129808}
   playerHUD: {fileID: 6106276}
   enemyHUD: {fileID: 34188174}
+  box: {fileID: 870840096}
+  playerSprite: {fileID: 287519060}
+  firePrefab: {fileID: 2994422130186658313, guid: 066cb47bd2484754ea1ca119c40b9856, type: 3}
+  item_functions: {fileID: 1146426332}
+  battleText: {fileID: 170129808}
   enemyInfo: {fileID: 1298584729}
   acts: {fileID: 1519418062}
   items: {fileID: 2029749103}
   mercyDecision: {fileID: 832875772}
-  box: {fileID: 870840096}
+  attacked: 0
+  acted: 0
 --- !u!4 &361034477
 Transform:
   m_ObjectHideFlags: 0
@@ -1577,7 +1579,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.39482057, b: 0.4339623, a: 1}
+  m_Color: {r: 0.3622641, g: 0.7261897, b: 1, a: 0.38431373}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3359,7 +3361,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.9103179, b: 1, a: 1}
+  m_Color: {r: 0.24705881, g: 0.8209943, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3399,7 +3401,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1519418063
 Transform:
   m_ObjectHideFlags: 0

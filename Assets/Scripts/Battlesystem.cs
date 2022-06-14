@@ -9,35 +9,27 @@ public enum BattleState { START, PLAYERTURN, ENEMYTURN, WON, LOST }
 public class Battlesystem : MonoBehaviour
 {
     public BattleState state;
-
     public GameObject playerPrefab;
     public GameObject enemyPrefab;
-
-    public GameObject firePrefab;
-
+    Vector3 originalPos;
     public Transform playerPos;
-    [SerializeField] GameObject playerSprite;
     public Transform enemyPos;
-
     attribute playerAttribute;
     attribute enemyAttribute;
-
-    public Items item_functions;
-
-    public Text battleText;
-
     public PlayerHUD playerHUD;
     public EnemyHUD enemyHUD;
-
+    public GameObject box;
+    [SerializeField] GameObject playerSprite;
+    public GameObject firePrefab;
+    public Items item_functions;
+    public Text battleText;
     [SerializeField] GameObject enemyInfo;
     [SerializeField] GameObject acts;
     [SerializeField] GameObject items;
     [SerializeField] GameObject mercyDecision;
-
-    public GameObject box;
-
-    Vector3 originalPos;
     private bool toldJoke;
+    public bool attacked;
+    public bool acted;
 
     // Updates HP & HUD of the Player and the Enemy to the newest version
     void Update()
@@ -120,7 +112,6 @@ public class Battlesystem : MonoBehaviour
 
         acted = false;
         attacked = false;
-        item_consumed = false;
 
         battleText.enabled = true;
         battleText.text = "* Choose your move";
@@ -219,10 +210,9 @@ public class Battlesystem : MonoBehaviour
         SceneManager.LoadScene(sceneName: "WinScreen");
     }
 
-    public bool attacked;
     public void OnAttackButton()
     {
-        if (state != BattleState.PLAYERTURN)
+        if (state != BattleState.PLAYERTURN || acted == true)
         {
             return;
         }
@@ -300,29 +290,26 @@ public class Battlesystem : MonoBehaviour
         }
     }
 
-    public bool acted;
     public void OnActButton()
     {
-        if (state != BattleState.PLAYERTURN)
-        {
-            return;
-        }
-        else if (acted == false)
+        if (state == BattleState.PLAYERTURN && acted == false)
         {
             battleText.enabled = false;
             enemyInfo.SetActive(false);
             items.SetActive(false);
             acts.SetActive(true);
+
+            acted = true;
+        }
+        else
+        {
+            return;
         }
     }
 
     public void OnActButtonJoke()
     {
-        if (acted == false)
-        {
-            StartCoroutine(PlayerActJoke());
-            acted = true;
-        }
+        StartCoroutine(PlayerActJoke());
     }
     IEnumerator PlayerActJoke()
     {
@@ -367,27 +354,25 @@ public class Battlesystem : MonoBehaviour
 
     public void OnActButtonCompliment()
     {
-        if (acted == false)
-        {
-            StartCoroutine(PlayerActCompliment());
-            acted = true;
-        }
+        StartCoroutine(PlayerActCompliment());
     }
+
     IEnumerator PlayerActCompliment()
     {
         acts.SetActive(false);
 
         battleText.enabled = true;
+        yield return new WaitForSeconds(2.0f);
         battleText.text = "* You gave the enemy a compliment";
-        yield return new WaitForSeconds(2f);
 
+        yield return new WaitForSeconds(2.0f);
         battleText.text = "* It liked it a lot";
-        yield return new WaitForSeconds(2f);
 
+        yield return new WaitForSeconds(2.0f);
         battleText.text = "\"Awww, thank you!\"";
-        yield return new WaitForSeconds(2f);
 
         enemyAttribute.friendliness += 20;
+        acted = true;
 
         state = BattleState.ENEMYTURN;
         StartCoroutine(EnemyTurn());
@@ -499,11 +484,9 @@ public class Battlesystem : MonoBehaviour
     }
 
 
-    public bool item_consumed;
-
     public void OnItemButton()
     {
-        if (state != BattleState.PLAYERTURN)
+        if (state != BattleState.PLAYERTURN || acted == true)
         {
             return;
         }
@@ -517,17 +500,16 @@ public class Battlesystem : MonoBehaviour
     }
     public void OnHealthPotionButton()
     {
-        if (playerAttribute.currentHP == playerAttribute.maxHP || item_functions.used)
-        {
-            return;
-        }
-
-        else
+        if (playerAttribute.currentHP != playerAttribute.maxHP && item_functions.used == false)
         {
             item_functions.HealthPotion(playerAttribute);
             items.SetActive(false);
             state = BattleState.ENEMYTURN;
             StartCoroutine(EnemyTurn());
+        }
+        else
+        {
+            return;
         }
     }
 }
