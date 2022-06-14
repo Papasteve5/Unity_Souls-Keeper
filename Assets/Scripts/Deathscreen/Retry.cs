@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class Retry : MonoBehaviour
 {
+
+    // Loads Game when clicked
     public void Nextscene(string scene)
     {
         SceneManager.LoadScene(scene);

@@ -6,20 +6,39 @@ public class attribute : MonoBehaviour
 {
     public string Name;
 
+    // Level and Experience Points
     public int lvl;
     public float EXP;
 
+    // Health Points
     public float maxHP;
     public float currentHP;
 
+    // DAMAGE
     public float damage;
-    public float takenDamage;
     public int fire_multiplier;
+    public float takenDamage;
 
-
+    // Friendliness Points
     public int friendliness;
     public int maxfriendliness;
 
+    // Calculates characters Health and Damage based on it's LVL
+    public void setCharacter()
+    {
+        float MaximumPossibleHP = 999;
+        float MaximumPossibleLevel = 100;
+        maxHP = Mathf.Round(maxHP + (MaximumPossibleHP - maxHP) * lvl / MaximumPossibleLevel);
+
+
+        float MaximumPossibleDMG = 999;
+        damage = Mathf.Round(damage + (MaximumPossibleDMG - damage) * lvl / MaximumPossibleLevel / 4);
+
+        maxfriendliness = maxfriendliness + (2 + lvl);
+        currentHP = maxHP;
+    }
+
+    // Function, player takes damage
     public bool TakeDamage(float dmg)
     {
         currentHP -= dmg;
@@ -33,31 +52,13 @@ public class attribute : MonoBehaviour
             return false;
         }
     }
+
+    // Function hurts Player when touched by <Projectile>
     public void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Projectile")
         {
             TakeDamage(takenDamage);
         }
-    }
-    public void setCharacter()
-    {
-
-        float MaximumPossibleHP = 999;
-        float MaximumPossibleLevel = 100;
-
-        maxHP = Mathf.Round(maxHP + (MaximumPossibleHP - maxHP) * lvl / MaximumPossibleLevel);
-
-        //maxHP = maxHP + lvl * 5;
-        //damage = damage + lvl + 5;
-
-        float MaximumPossibleDMG = 999;
-
-        damage = Mathf.Round(damage + (MaximumPossibleDMG - damage) * lvl / MaximumPossibleLevel / 4);
-
-        maxfriendliness = maxfriendliness + (2 + lvl);
-        currentHP = maxHP;
-
-        //(level / x) * y
     }
 }

@@ -285,8 +285,15 @@ public class Battlesystem : MonoBehaviour
     // Function called when Fire Button is clicked
     public void OnFireButton()
     {
-        StartCoroutine(PlayerFire());
-        attacked = true;
+        if (attacked == false)
+        {
+            attacked = true;
+            StartCoroutine(PlayerFire());
+        }
+        else
+        {
+            return;
+        }
     }
 
     // Function called after Function "OnFireButton" was clicked -> does twice as much damage as normal Attack
@@ -321,16 +328,16 @@ public class Battlesystem : MonoBehaviour
     // ACT Button, function called when clicked
     public void OnActButton()
     {
-        if (state == BattleState.PLAYERTURN && acted == false)
+        if (state != BattleState.PLAYERTURN || acted == true || attacked == true)
+        {
+            return;
+        }
+        else
         {
             battleText.enabled = false;
             enemyInfo.SetActive(false);
             items.SetActive(false);
             acts.SetActive(true);
-        }
-        else
-        {
-            return;
         }
     }
 
@@ -448,7 +455,7 @@ public class Battlesystem : MonoBehaviour
     // ITEM Button, function called when clicked
     public void OnItemButton()
     {
-        if (state != BattleState.PLAYERTURN || acted == true)
+        if (state != BattleState.PLAYERTURN || acted == true || attacked == true)
         {
             return;
         }
@@ -483,7 +490,7 @@ public class Battlesystem : MonoBehaviour
     // MERCY Button, function called when clicked
     public void OnMercyButton()
     {
-        if (state != BattleState.PLAYERTURN || acted == true)
+        if (state != BattleState.PLAYERTURN || acted == true || attacked == true)
         {
             return;
         }

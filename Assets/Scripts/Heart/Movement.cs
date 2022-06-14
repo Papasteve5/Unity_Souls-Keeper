@@ -6,25 +6,21 @@ public class Movement : MonoBehaviour
     public Rigidbody2D rb;
     Vector2 movement;
 
-    void Start()
-    {
-    }
-
-
     void Update()
     {
         Move();
     }
 
+    // Function gets Input from Unity Function GetAxisRaw(), (Inputs are keys like: W, S, D, A or Arrow Keys)
     void Move()
     {
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
     }
 
+    // Applies speed to input
     void FixedUpdate()
     {
-        /*Hitbox Geschwindigkeit = Neue Bewegung in Richtung x & y mit der Geschwindigkeit*/
         rb.velocity = new Vector3(movement.x * speed, movement.y * speed);
     }
 }

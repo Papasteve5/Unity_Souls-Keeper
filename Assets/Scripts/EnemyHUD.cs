@@ -10,22 +10,25 @@ public class EnemyHUD : MonoBehaviour
     public Text enemyHP;
     public Slider health;
 
-    public void setHUD(attribute attribute) {
-
+    // Fills HUD with proper information
+    public void setHUD(attribute attribute)
+    {
         enemyName.text = attribute.Name;
 
         health.maxValue = attribute.maxHP;
         health.value = attribute.currentHP;
     }
 
-    public void setMaxHP(float hp) {
-
+    // Defines Max HP on the enemy Healthbar
+    public void setMaxHP(float hp)
+    {
         health.maxValue = hp;
         health.value = hp;
     }
 
-    public void setHP(float hp) {
-
+    // Defines HP on enemy Healthbar
+    public void setHP(float hp)
+    {
         health.value = hp;
     }
 }

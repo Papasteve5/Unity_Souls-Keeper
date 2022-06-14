@@ -6,7 +6,6 @@ public enum MoveSet { HORIZONTAL, VERTICAL, ALL, NOTHING }
 
 public class Attack : MonoBehaviour
 {
-    public MoveSet state;
     public GameObject Arrow_down;
     private GameObject newArrow_down;
     public GameObject Arrow_up;
@@ -17,12 +16,14 @@ public class Attack : MonoBehaviour
     private GameObject newArrow_right;
     private bool isCreated;
 
-    // Update is called once per frame
+
+    // Always updates Attack Cleanup
     void Update()
     {
         clearAttack();
     }
 
+    // Spawns Arrows from all directions at random Positions
     public void allAttack()
     {
         isCreated = false;
@@ -49,6 +50,7 @@ public class Attack : MonoBehaviour
         isCreated = true;
     }
 
+    // Deletes previous Arrows after a couple seconds
     public void clearAttack()
     {
         GameObject[] arrows;

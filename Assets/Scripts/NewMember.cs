@@ -6,15 +6,14 @@ using UnityEngine.SceneManagement;
 
 public class NewMember : MonoBehaviour
 {
+    public GameObject enemyPrefab;
+    public Transform enemyPos;
+    attribute enemyAttribute;
 
-public GameObject panel;
-public GameObject SceneText;
+    public GameObject SceneText;
+    public GameObject panel;
 
-public Transform enemyPos;
-attribute enemyAttribute;
-
-public GameObject enemyPrefab;
-
+    // Sets up enemy (not animated, faded)
     void Start()
     {
         GameObject enemySpawn = Instantiate(enemyPrefab, enemyPos);
@@ -29,7 +28,9 @@ public GameObject enemyPrefab;
         StartCoroutine(transition());
     }
 
-    IEnumerator transition() {
+    // Sets up enemy (with animation, full color, different background)
+    IEnumerator transition()
+    {
         yield return new WaitForSeconds(3f);
         enemyAttribute.GetComponentInChildren<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
         enemyAttribute.GetComponentInChildren<Animator>().enabled = true;

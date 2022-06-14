@@ -3,13 +3,8 @@ using UnityEngine;
 public class projectile_right : MonoBehaviour
 {
     public float speed = 3.0f;
-    // Start is called before the first frame update
-    void Start()
-    {
 
-    }
-
-    // Update is called once per frame
+    // Moves Object right
     void Update()
     {
         transform.Translate(Vector3.right * speed * Time.deltaTime);
