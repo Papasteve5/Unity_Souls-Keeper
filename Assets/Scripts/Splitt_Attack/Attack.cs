@@ -30,6 +30,13 @@ public class Attack : MonoBehaviour
 
         if (!isCreated)
         {
+            /*
+            Example for creating an arrow:
+            create(arrow going down with direction (random x) (random y) no rotation)
+
+            Instantiate = create
+            Quaternion.identity = no rotation in movement
+            */
             for (int i = 0; i < 3; i++)
             {
                 newArrow_down = Instantiate(Arrow_down, new Vector2(Random.Range(-1.8f, 1.8f), Random.Range(8.0f, 12.0f)), Quaternion.identity);

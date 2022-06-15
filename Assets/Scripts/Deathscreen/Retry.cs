@@ -17,6 +17,5 @@ public class Retry : MonoBehaviour
         {
             SceneManager.LoadScene("Scene");
         }
-
     }
 }

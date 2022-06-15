@@ -45,8 +45,13 @@ public class Battlesystem : MonoBehaviour
     [SerializeField] GameObject mercyDecision;
 
     // Boolean to check if a move was made during Player Turn
-    public bool attacked;
-    public bool acted;
+    private bool attacked;
+    private bool acted;
+
+    // Friendship Points for different dialogue options
+    public int jokeFP = 15;
+    public int complimentFP = 5;
+    public int threatFP = 10;
 
     // Updates HP & HUD of the Player and the Enemy to the newest version
     void Update()
@@ -153,6 +158,7 @@ public class Battlesystem : MonoBehaviour
         battleText.text = "* Choose your move";
 
         showHUD();
+
     }
 
     // Function checks status, sets battle scene different, attacks and checks if battle is over
@@ -163,6 +169,9 @@ public class Battlesystem : MonoBehaviour
         {
             battleText.text = "* The Enemy has taken a Liking to you now";
             yield return new WaitForSeconds(2f);
+
+            battleText.text = "* You have the option to show MERCY";
+            yield return new WaitForSeconds(3f);
         }
         // Informs the Player, when he attacks the enemy
         else if (enemyAttribute.currentHP < enemyAttribute.maxHP)
@@ -369,7 +378,7 @@ public class Battlesystem : MonoBehaviour
             yield return new WaitForSeconds(2f);
             battleText.text = reactions[0];
             yield return new WaitForSeconds(3f);
-            enemyAttribute.friendliness += 25;
+            enemyAttribute.friendliness += jokeFP;
 
             // If Player has threated an enemy, this will reset the damage to it's original value
             if (playerAttribute.takenDamage > 1)
@@ -403,19 +412,17 @@ public class Battlesystem : MonoBehaviour
     IEnumerator PlayerActCompliment()
     {
         acts.SetActive(false);
-
         battleText.enabled = true;
-        yield return new WaitForSeconds(2.0f);
         battleText.text = "* You gave the enemy a compliment";
-
         yield return new WaitForSeconds(2.0f);
+
         battleText.text = "* It liked it a lot";
-
         yield return new WaitForSeconds(2.0f);
-        battleText.text = "\"Awww, thank you!\"";
 
-        enemyAttribute.friendliness += 20;
+        battleText.text = "\"Awww, thank you!\"";
+        enemyAttribute.friendliness += complimentFP;
         acted = true;
+        yield return new WaitForSeconds(2.0f);
 
         state = BattleState.ENEMYTURN;
         StartCoroutine(EnemyTurn());
@@ -436,7 +443,7 @@ public class Battlesystem : MonoBehaviour
         battleText.enabled = true;
 
         battleText.text = "* You threatened the enemy";
-        enemyAttribute.friendliness += 10;
+        enemyAttribute.friendliness += threatFP;
         yield return new WaitForSeconds(2f);
 
         battleText.text = "\"Tch, go home kid\"";
@@ -473,7 +480,7 @@ public class Battlesystem : MonoBehaviour
     {
         if (playerAttribute.currentHP != playerAttribute.maxHP && item_functions.used == false)
         {
-            item_functions.HealthPotion(playerAttribute);
+            item_functions.HealthPotion(playerAttribute, battleText);
             items.SetActive(false);
             state = BattleState.ENEMYTURN;
             StartCoroutine(EnemyTurn());

@@ -219,8 +219,8 @@ MonoBehaviour:
   playerName: {fileID: 942572504}
   playerLVL: {fileID: 469037174}
   playerHP: {fileID: 2009899489}
-  playerHP_POS: {fileID: 2009899488}
   health: {fileID: 340782300}
+  playerHP_POS: {fileID: 2009899488}
   health_POS: {fileID: 340782298}
   buttons: {fileID: 1115938148}
 --- !u!1 &15524934
@@ -386,8 +386,8 @@ RectTransform:
   m_LocalScale: {x: 1.000136, y: 1.000136, z: 1.000136}
   m_Children:
   - {fileID: 1298584730}
-  - {fileID: 2029749104}
   - {fileID: 1519418063}
+  - {fileID: 2029749104}
   - {fileID: 832875773}
   m_Father: {fileID: 2117057414}
   m_RootOrder: 2
@@ -1070,21 +1070,22 @@ MonoBehaviour:
   state: 0
   playerPrefab: {fileID: 4835453150401417266, guid: 3dfb613c8f5194643a2b5edc08b8d9a8, type: 3}
   enemyPrefab: {fileID: 7367842126946585565, guid: 95465e59010ae9141a869e14529c8298, type: 3}
+  firePrefab: {fileID: 2994422130186658313, guid: 066cb47bd2484754ea1ca119c40b9856, type: 3}
+  box: {fileID: 870840096}
+  playerSprite: {fileID: 287519060}
   playerPos: {fileID: 287519061}
   enemyPos: {fileID: 1260849063}
   playerHUD: {fileID: 6106276}
   enemyHUD: {fileID: 34188174}
-  box: {fileID: 870840096}
-  playerSprite: {fileID: 287519060}
-  firePrefab: {fileID: 2994422130186658313, guid: 066cb47bd2484754ea1ca119c40b9856, type: 3}
   item_functions: {fileID: 1146426332}
   battleText: {fileID: 170129808}
   enemyInfo: {fileID: 1298584729}
   acts: {fileID: 1519418062}
   items: {fileID: 2029749103}
   mercyDecision: {fileID: 832875772}
-  attacked: 0
-  acted: 0
+  jokeFP: 15
+  complimentFP: 5
+  threatFP: 10
 --- !u!4 &361034477
 Transform:
   m_ObjectHideFlags: 0
@@ -3401,7 +3402,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1519418063
 Transform:
   m_ObjectHideFlags: 0
@@ -3417,7 +3418,7 @@ Transform:
   - {fileID: 837925228}
   - {fileID: 281832679}
   m_Father: {fileID: 34188173}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1728156483
 GameObject:
@@ -3829,7 +3830,7 @@ Transform:
   - {fileID: 752636266}
   - {fileID: 1463817384}
   m_Father: {fileID: 34188173}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2117057410
 GameObject:

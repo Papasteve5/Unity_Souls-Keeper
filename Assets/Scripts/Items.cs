@@ -8,7 +8,7 @@ public class Items : MonoBehaviour
     float HealthPotionHP = 5f;
 
     // HealthPotion Item, can be used to heal the Player
-    public void HealthPotion(attribute attribute)
+    public void HealthPotion(attribute attribute, Text battleText)
     {
         /*
         When Player gets healed to much

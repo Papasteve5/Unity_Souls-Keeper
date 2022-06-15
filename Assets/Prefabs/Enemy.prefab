@@ -51,8 +51,8 @@ MonoBehaviour:
   maxHP: 40
   currentHP: 0
   damage: 1
-  takenDamage: 0
   fire_multiplier: 0
+  takenDamage: 0
   friendliness: 0
   maxfriendliness: 25
 --- !u!114 &4628462233616355593
@@ -67,7 +67,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3dad9cda437b4da43b4bf690219193e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  state: 0
   Arrow_down: {fileID: 6923052317757717998, guid: 3f1045778f830a246bcd166d35323869, type: 3}
   Arrow_up: {fileID: 6923052317757717998, guid: 3ff48614ecee5ae48a2ba7f5664fc050, type: 3}
   Arrow_left: {fileID: 7811057450412272839, guid: 4898ef08e1832b948b88089a8cca4459, type: 3}
