@@ -7,36 +7,13 @@ public class PlayerMovement : MonoBehaviour
 
     public Animator animator;
 
-    public GameObject Igris;
-
     public float speed;
 
     Vector2 movement;
 
-
-    private void Start()
-    {
-        Igris.GetComponent<Renderer>().enabled = true;
-    }
-
     public void Update()
     {
         PlayerMove();
-
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            Debug.Log("Despawn Igris");
-            Igris.GetComponent<Renderer>().enabled = false;
-
-        }
-        
-        if (Input.GetMouseButtonDown(1))
-        {
-            Debug.Log("Summon Igris");
-            Igris.GetComponent<Renderer>().enabled = true;
-        }
-
     }
 
     void PlayerMove()
