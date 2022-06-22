@@ -5,8 +5,6 @@ public class Follow : MonoBehaviour
 {
     public Animator animator;
 
-    private Rigidbody2D rb;
-
     public float speed;
     public float Distance;
 
@@ -25,30 +23,22 @@ public class Follow : MonoBehaviour
         }
     }
 
-    private void Update()
+    public void Update()
+    {
+    }
+
+    private void FixedUpdate()
     {
         following();
     }
 
     /*
-        void follow()
-        {
-            step = speed * Time.deltaTime;
-
-            Vector2 target = worldSystem.playerPrefab.transform.position;
-
-
-            if (Vector3.Distance(transform.position, target) > Distance)
-            {
-                transform.position = Vector3.MoveTowards(transform.position, target, step);
-            }
-        }
-
-        void AnimMove()
-        {
-            animator.SetFloat("Horizontal", transform.position.x);
-            animator.SetFloat("Vertical", transform.position.y);
-            animator.SetFloat("Speed", transform.position.sqrMagnitude);
-        }
+    void AnimMove()
+    {
+        animator.SetFloat("Horizontal", transform.position.x);
+        animator.SetFloat("Vertical", transform.position.y);
+        animator.SetFloat("Speed", transform.position.sqrMagnitude);
+    }
     */
+
 }

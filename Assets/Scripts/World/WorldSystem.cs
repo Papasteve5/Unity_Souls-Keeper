@@ -5,6 +5,7 @@ using UnityEngine;
 public class WorldSystem : MonoBehaviour
 {
     public GameObject playerPrefab;
+    GameObject Player;
 
     attribute playerAttribute;
 
@@ -12,7 +13,11 @@ public class WorldSystem : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GameObject Player = Instantiate(playerPrefab, new Vector2(0, 0), Quaternion.identity);
+        Player = Instantiate(playerPrefab, new Vector2(0, 0), Quaternion.identity);
         playerAttribute = Player.GetComponent<attribute>();
+    }
+
+    void Update()
+    {
     }
 }

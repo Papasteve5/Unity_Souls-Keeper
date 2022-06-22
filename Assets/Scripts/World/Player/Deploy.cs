@@ -19,13 +19,11 @@ public class Deploy : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(1) && isSpawned == false)
         {
-            Debug.Log("Summon Igris");
             playerSpawn = Instantiate(Igris, playerPos);
             isSpawned = true;
         }
         else if (Input.GetMouseButtonDown(0) && isSpawned == true)
         {
-            Debug.Log("Despawn Igris");
             Destroy(playerSpawn);
             isSpawned = false;
         }
